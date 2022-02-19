@@ -19,12 +19,6 @@ const vehicleReducer = (state, action) => {
         ...state,
         vehicleItems: action.payload,
       };
-    case "setVehicleItem":
-      let vehicleItems = [action.payload, ...state.vehicleItems];
-      return {
-        ...state,
-        vehicleItems,
-      };
     case "setYear":
       return {
         ...state,

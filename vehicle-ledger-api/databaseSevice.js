@@ -41,7 +41,7 @@ exports.GetVehicleData = async (id, month, year) => {
 
     return new Promise((resolve, reject) => {
         db.all(
-            `SELECT * FROM vehicle_data WHERE vehicle_id = ${id} AND date BETWEEN date('${startDate}') AND date('${endtDate}')  ORDER BY date DESC`,
+            `SELECT * FROM vehicle_data WHERE vehicle_id = ${id} AND date BETWEEN date('${startDate}') AND date('${endtDate}')  ORDER BY od_meter DESC`,
             (err, rows) => {
                 resolve(rows);
             }
@@ -51,18 +51,22 @@ exports.GetVehicleData = async (id, month, year) => {
 
 exports.DeleteVehicleData = async (id, month, year, vehicleId) => {
     return new Promise(async (resolve, reject) => {
-        console.log(id, month, year, vehicleId)
         let records = await module.exports.GetVehicleData(vehicleId, month, year);
         let deletingRecord = await GetVehicleDataById(id);
-        console.log(deletingRecord)
 
-        if (records.length > 0 && Date.parse(records[0].date) > Date.parse(deletingRecord.date)) {
+        if (records.length > 0 && records[0].od_meter > deletingRecord.od_meter) {
 
-            let lessRecord = records.filter(x => Date.parse(x.date) > Date.parse(deletingRecord.date)).pop()
-            let greatRecord = records.filter(x => Date.parse(x.date) < Date.parse(deletingRecord.date))[0]
+            // let lessRecord = records.filter(x => Date.parse(x.date) > Date.parse(deletingRecord.date)).pop()
+            // let greatRecord = records.filter(x => Date.parse(x.date) < Date.parse(deletingRecord.date))[0]
+
+            let lessRecord = records.filter(x => x.od_meter > deletingRecord.od_meter).pop()
+            let greatRecord = records.filter(x => x.od_meter < deletingRecord.od_meter)[0]
+
+            console.log(lessRecord)
+            console.log(greatRecord)
 
             if (lessRecord !== undefined && greatRecord !== undefined) {
-                let sql1 = `UPDATE vehicle_data SET usage=${lessRecord.od_meter - greatRecord.od_meter} WHERE id=${lessRecord.id}`
+                let sql1 = `UPDATE vehicle_data SET usage=${Math.abs(lessRecord.od_meter - greatRecord.od_meter)} WHERE id=${lessRecord.id}`
                 await db.run(sql1);
             }
         }

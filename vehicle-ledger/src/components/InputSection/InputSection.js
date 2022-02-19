@@ -17,8 +17,9 @@ const InputSection = () => {
   const { state: { selectedVehicle, vehicleItems }, dispatch } = React.useContext(VechicleContext);
 
   usageValue.current = React.useMemo(() => {
+    console.log(vehicleItems)
     return odMeter.value && vehicleItems && vehicleItems.length > 0
-      ? odMeter.value - vehicleItems.filter(x => Date.parse(x.date) < Date.parse(date))[0]?.od_meter
+      ? odMeter.value - vehicleItems.filter(x => Date.parse(x.date) <= Date.parse(date))[0]?.od_meter
       : 0
   }, [odMeter, vehicleItems]);
 

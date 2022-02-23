@@ -4,16 +4,19 @@ import { VehicleContextProvider } from "./context/VehicleContext";
 
 import Home from "./components/home/Home";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import VehicleAdd from "./components/VehicleAdd/VehicleAdd";
+
+const AddVehicle = React.lazy(() => import("./components/VehicleAdd"));
 
 function App() {
   return (
     <BrowserRouter>
       <VehicleContextProvider>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/add" element={<VehicleAdd />} />
-        </Routes>
+        <React.Suspense fallback={<div>Loading ...</div>}>
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/add" element={<AddVehicle />} />
+          </Routes>
+        </React.Suspense>
       </VehicleContextProvider>
     </BrowserRouter>
   );

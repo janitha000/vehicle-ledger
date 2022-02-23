@@ -33,7 +33,7 @@ const SearchSection = () => {
 
   const reRenderFn = () => {
     console.log(reRender)
-    setRerender(true)
+    setRerender((prev) => !prev)
     console.log(reRender)
 
   }

@@ -13,7 +13,7 @@ const VechicleData = ({ isOpen, reRender }) => {
 
     const onDelete = async () => {
         await fetch(`${API_URL}/vehicles/${selectedVehicle.id}`, { method: 'DELETE' });
-        reRender();
+        window.location.reload();
     }
 
     if (!isOpen || selectedVehicle == null) return (<></>)

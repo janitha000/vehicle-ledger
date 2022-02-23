@@ -8,11 +8,7 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
 
-const VehicleTable = ({
-  tableHeaders,
-  tableRows,
-  deleteItemClick,
-}) => {
+const VehicleTable = ({ tableHeaders, tableRows, deleteItemClick }) => {
   const onDeleteClick = (id) => {
     const item = tableRows.filter((x) => x.id === id);
     deleteItemClick(item[0]);
